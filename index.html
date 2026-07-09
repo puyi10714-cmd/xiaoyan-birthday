@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写给未来的张医生</title>
+<style>
+/* ==========================================
+   RESET & GLOBAL
+   ========================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1a2e;
+  --deep-blue: #16213e;
+  --warm-gold: #e8b86d;
+  --soft-cream: #f5f0e8;
+  --chat-green: #95ec69;
+  --chat-white: #ffffff;
+  --text-light: #c9d1d9;
+  --text-muted: #8b949e;
+  --accent-red: #e57373;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  background: var(--navy);
+  color: var(--text-light);
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+
+/* ==========================================
+   STARFIELD BACKGROUND
+   ========================================== */
+#starCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+
+/* ==========================================
+   MUSIC BUTTON
+   ========================================== */
+#musicBtn {
+  position: fixed; top: 20px; right: 20px; z-index: 100;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(232,184,109,0.3);
+  background: rgba(26,26,46,0.6);
+  backdrop-filter: blur(12px);
+  cursor: pointer; font-size: 18px;
+  transition: all 0.4s;
+  color: var(--warm-gold);
+}
+#musicBtn:hover { border-color: var(--warm-gold); box-shadow: 0 0 20px rgba(232,184,109,0.15); }
+#musicBtn.on {
+  border-color: var(--warm-gold);
+  box-shadow: 0 0 25px rgba(232,184,109,0.25);
+  animation: musicGlow 2.5s ease-in-out infinite;
+}
+@keyframes musicGlow {
+  0%, 100% { box-shadow: 0 0 25px rgba(232,184,109,0.25); }
+  50% { box-shadow: 0 0 45px rgba(232,184,109,0.4); }
+}
+
+/* ==========================================
+   CONFETTI CANVAS
+   ========================================== */
+#confettiCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 999;
+}
+
+/* ==========================================
+   MAIN SCROLL CONTAINER
+   ========================================== */
+.main-container {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+
+/* ==========================================
+   SECTION 1 — OPENING
+   ========================================== */
+.opening {
+  min-height: 90vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+}
+
+.opening-eyebrow {
+  font-size: 14px; letter-spacing: 4px;
+  color: var(--warm-gold);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.opening-title {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: #fff;
+  line-height: 1.5;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.3s forwards;
+}
+.opening-title .highlight {
+  color: var(--warm-gold);
+}
+
+.opening-sub {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.6s forwards;
+}
+
+.opening-start-btn {
+  margin-top: 50px;
+  padding: 14px 40px;
+  font-size: 15px;
+  color: #1a1a2e;
+  background: var(--warm-gold);
+  border: none; border-radius: 30px;
+  cursor: pointer;
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.8s forwards;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(232,184,109,0.25);
+}
+.opening-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(232,184,109,0.4);
+}
+
+.opening-hint-text {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1s forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   DIVIDER
+   ========================================== */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 50px 0; opacity: 0.5;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,184,109,0.3), transparent);
+}
+.divider span { color: var(--warm-gold); font-size: 14px; }
+
+/* ==========================================
+   SECTION 2 — "我知道" (I know you)
+   ========================================== */
+.know-section {
+  padding: 40px 0;
+}
+
+.know-section h2 {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.8rem; color: #fff;
+  margin-bottom: 30px;
+}
+
+.know-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 30px 28px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s ease;
+}
+.know-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.know-card .emoji { font-size: 28px; margin-bottom: 10px; display: block; }
+.know-card h3 {
+  font-size: 1.1rem; color: var(--warm-gold);
+  margin-bottom: 8px; font-weight: normal;
+}
+.know-card p {
+  font-size: 0.95rem; color: var(--text-muted);
+  line-height: 1.8;
+}
+
+/* ==========================================
+   SECTION 3 — CHAT BUBBLES
+   ========================================== */
+.chat-section {
+  padding: 40px 0;
+}
+
+.chat-section h2 {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.8rem; color: #fff;
+  margin-bottom: 10px;
+}
+.chat-section .chat-subtitle {
+  font-size: 13px; color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.chat-list {
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.chat-msg {
+  max-width: 80%; padding: 13px 18px;
+  border-radius: 18px;
+  font-size: 0.95rem; line-height: 1.7;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+.chat-msg.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.chat-msg.from-me {
+  align-self: flex-end;
+  background: var(--chat-green);
+  color: #1a1a2e;
+  border-bottom-right-radius: 4px;
+  margin-left: 20%;
+}
+.chat-msg.from-her {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.08);
+  color: var(--text-light);
+  border-bottom-left-radius: 4px;
+  margin-right: 20%;
+}
+.chat-time {
+  font-size: 11px; color: var(--text-muted);
+  text-align: center; margin: 16px 0 8px;
+}
+
+/* ==========================================
+   SECTION 4 — HEARTBEAT LINE
+   ========================================== */
+.heartbeat-section {
+  padding: 50px 0; text-align: center;
+}
+
+.heartbeat-line {
+  width: 100%; height: 80px;
+  margin: 20px 0;
+}
+.heartbeat-text {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.3rem; color: var(--warm-gold);
+  margin-top: 16px;
+}
+
+/* ==========================================
+   SECTION 5 — MESSAGE
+   ========================================== */
+.message-section {
+  padding: 40px 0;
+}
+
+.message-card {
+  background: linear-gradient(160deg, rgba(232,184,109,0.06), rgba(232,184,109,0.02));
+  border: 1px solid rgba(232,184,109,0.12);
+  border-radius: 20px; padding: 40px 30px;
+}
+
+.message-card h2 {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.6rem; color: #fff;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+#typewriter {
+  font-size: 1.05rem; line-height: 2.3;
+  color: var(--text-light);
+  min-height: 260px;
+}
+.cursor {
+  display: inline-block; width: 2px; height: 1.2em;
+  background: var(--warm-gold); margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.8s step-end infinite;
+}
+@keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+#signature {
+  margin-top: 30px; text-align: right;
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.3rem; color: var(--warm-gold);
+  opacity: 0; transition: opacity 1.5s;
+}
+#signature.show { opacity: 1; }
+
+/* ==========================================
+   SECTION 6 — PRESCRIPTION
+   ========================================== */
+.prescription-section {
+  padding: 50px 0;
+}
+
+.rx-card {
+  background: var(--soft-cream);
+  color: #2d2d2d;
+  border-radius: 8px;
+  padding: 35px 28px;
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.rx-card::before {
+  content: '℞';
+  position: absolute; top: 20px; right: 24px;
+  font-size: 90px; color: rgba(0,0,0,0.04);
+  pointer-events: none;
+}
+.rx-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(0,0,0,0.15);
+}
+.rx-header h3 {
+  font-size: 1.4rem; font-weight: normal;
+}
+.rx-header .rx-no {
+  font-size: 13px; color: #888;
+}
+.rx-patient {
+  font-size: 14px; margin-bottom: 4px;
+  color: #555;
+}
+.rx-patient span {
+  color: #2d2d2d; font-size: 1.1rem;
+}
+.rx-table {
+  width: 100%; margin: 20px 0;
+}
+.rx-table .rx-item {
+  display: flex; align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px dotted rgba(0,0,0,0.08);
+  font-size: 0.95rem;
+}
+.rx-item .rx-drug {
+  flex: 1; color: #2d2d2d;
+}
+.rx-item .rx-dose {
+  color: #888; font-size: 0.85rem;
+  text-align: right;
+}
+.rx-footer {
+  margin-top: 24px; padding-top: 16px;
+  border-top: 1px dashed rgba(0,0,0,0.15);
+  font-size: 13px; color: #888; line-height: 2;
+}
+.rx-footer .rx-doc {
+  font-size: 1rem; color: #2d2d2d;
+  margin-top: 8px;
+}
+
+/* ==========================================
+   SECTION 7 — PHOTOS
+   ========================================== */
+.photos-section {
+  padding: 50px 0; text-align: center;
+}
+.photos-section h2 {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.6rem; color: #fff;
+  margin-bottom: 30px;
+}
+.photos-grid {
+  display: flex; flex-wrap: wrap; gap: 20px;
+  justify-content: center;
+}
+.photo-card {
+  background: rgba(255,255,255,0.95);
+  padding: 10px 10px 35px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+  width: 200px;
+  transition: all 0.3s ease;
+}
+.photo-card:nth-child(1) { transform: rotate(-2deg); }
+.photo-card:nth-child(2) { transform: rotate(1.5deg); }
+.photo-card:nth-child(3) { transform: rotate(-1deg); }
+.photo-card:nth-child(4) { transform: rotate(2.5deg); }
+.photo-card:hover {
+  transform: rotate(0deg) scale(1.08) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.4); z-index: 5;
+}
+.photo-img {
+  width: 180px; height: 180px;
+  background: linear-gradient(135deg, #e8e0d8, #d5ccc0);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.photo-img::after {
+  content: '📷'; font-size: 48px; opacity: 0.3;
+}
+.photo-tag {
+  position: absolute; bottom: 4px; left: 0; right: 0;
+  text-align: center; font-size: 10px; color: #999; z-index: 2;
+}
+.photo-label {
+  text-align: center; margin-top: 10px;
+  font-size: 13px; color: #666;
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+}
+.photo-hint {
+  margin-top: 24px; font-size: 12px; color: var(--text-muted);
+}
+
+/* ==========================================
+   SECTION 8 — CLOSING
+   ========================================== */
+.closing {
+  min-height: 60vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 60px 0;
+}
+.closing h2 {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #fff; margin-bottom: 16px;
+}
+.closing .sub {
+  font-size: 1rem; color: var(--warm-gold);
+}
+.closing .cake-emoji {
+  font-size: 60px; margin-top: 24px;
+  cursor: pointer; transition: transform 0.3s;
+  display: inline-block;
+}
+.closing .cake-emoji:hover { transform: scale(1.2); }
+.closing .click-hint {
+  font-size: 13px; color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* ==========================================
+   FORTUNE CARD (after clicking cake)
+   ========================================== */
+.fortune-popup {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10,0,20,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s;
+}
+.fortune-popup.show {
+  opacity: 1; pointer-events: auto;
+}
+.fortune-card {
+  background: linear-gradient(150deg, rgba(232,184,109,0.1), rgba(26,26,46,0.95));
+  border: 1px solid rgba(232,184,109,0.25);
+  border-radius: 20px; padding: 40px 30px;
+  max-width: 350px; text-align: center;
+  cursor: pointer;
+}
+.fortune-card .fortune-icon { font-size: 50px; margin-bottom: 16px; }
+.fortune-card .fortune-text {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 1.2rem; color: #fff; line-height: 2.2;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 600px) {
+  .main-container { padding: 40px 16px 60px; }
+  .chat-msg { max-width: 88%; }
+  .chat-msg.from-me { margin-left: 12%; }
+  .chat-msg.from-her { margin-right: 12%; }
+  .rx-card { padding: 24px 18px; }
+  .photo-card { width: 150px; padding: 8px 8px 28px; }
+  .photo-img { width: 134px; height: 134px; }
+  .message-card { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== MUSIC ===== -->
+<button id="musicBtn" onclick="toggleMusic()">🔇</button>
+<audio id="bgMusic" src="晴天-周杰伦.mp3" loop preload="auto"></audio>
+
+<!-- ===== CANVASES ===== -->
+<canvas id="starCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+
+<!-- ===== FORTUNE POPUP ===== -->
+<div class="fortune-popup" id="fortunePopup" onclick="closeFortune()">
+  <div class="fortune-card">
+    <div class="fortune-icon">🔮</div>
+    <div class="fortune-text" id="fortuneText"></div>
+  </div>
+</div>
+
+<!-- ==========================================
+MAIN CONTENT
+========================================== -->
+<div class="main-container">
+
+  <!-- ===== SECTION 1 — OPENING ===== -->
+  <section class="opening" id="sec1">
+    <p class="opening-eyebrow">— 写给未来的张医生 —</p>
+    <h1 class="opening-title">
+      嗨，<span class="highlight">小颜同学</span>
+    </h1>
+    <p class="opening-sub">有一些话，想在这个特别的日子说给你听</p>
+    <button class="opening-start-btn" onclick="startExperience()">✨ 打开这封信</button>
+    <p class="opening-hint-text">音乐也会一起开始 🎵</p>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 2 — "我知道" ===== -->
+  <section class="know-section" id="sec2">
+    <h2>我知道。</h2>
+
+    <div class="know-card" data-reveal>
+      <span class="emoji">📚</span>
+      <h3>我知道学临床有多难</h3>
+      <p>那堆起来比人还高的专业书，背不完的名词解释，永远在路上的考试。别人眼里的"学霸"，只有你自己知道每一个深夜是怎么熬过来的。</p>
+    </div>
+
+    <div class="know-card" data-reveal>
+      <span class="emoji">🫀</span>
+      <h3>我知道你曾经过得很累</h3>
+      <p>曾经有一段时间，你总是把事情翻来覆去地想，总觉得是不是自己不够好。好在你慢慢走出来了。现在的你，比从前轻松了很多，也从容了很多。</p>
+    </div>
+
+    <div class="know-card" data-reveal>
+      <span class="emoji">💡</span>
+      <h3>但我也知道——</h3>
+      <p>你比你自己想象的要厉害得多。你能在图书馆从早坐到晚，能在考试周连熬几个通宵，也能在朋友需要的时候给出最温暖的安慰。你只是偶尔忘了，自己也需要被安慰。</p>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 3 — CHAT BUBBLES ===== -->
+  <section class="chat-section" id="sec3">
+    <h2>我们聊过的那些话</h2>
+    <p class="chat-subtitle">微信和QQ的聊天记录，翻都翻不完</p>
+
+    <div class="chat-list">
+      <p class="chat-time">—— 某天深夜 ——</p>
+
+      <div class="chat-msg from-her" data-reveal>
+        今天又是好累的一天，感觉自己什么都做不好 😞
+      </div>
+      <div class="chat-msg from-me" data-reveal>
+        来，我帮你分析一下：第一，你今天做的事里面至少有三件是超额完成的；第二，你只是累了，不是做不好。先去睡一觉，明早起来再看。
+      </div>
+      <div class="chat-msg from-her" data-reveal>
+        你怎么每次都这么理性啊 😂
+      </div>
+      <div class="chat-msg from-me" data-reveal>
+        因为有人钻牛角尖的时候，需要一个人把她拉出来。我就是那个人。
+      </div>
+
+      <p class="chat-time">—— 某天下午 ——</p>
+
+      <div class="chat-msg from-her" data-reveal>
+        我是不是太矫情了
+      </div>
+      <div class="chat-msg from-me" data-reveal>
+        不，你只是对自己的要求太高了。换成别人早就崩溃了，你还站在原地，这已经很厉害了。而且——<br>就算你真的矫情，那又怎样？我听着呢。
+      </div>
+      <div class="chat-msg from-her" data-reveal>
+        谢谢你 🥺
+      </div>
+      <div class="chat-msg from-me" data-reveal>
+        不用谢，未来的张医生。等你以后当了大医生，记得给我留个VIP号就行 😎
+      </div>
+      <div class="chat-msg from-her" data-reveal">
+        哈哈哈哈给你留个精神科的号
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 4 — HEARTBEAT ===== -->
+  <section class="heartbeat-section">
+    <canvas id="heartbeatCanvas" class="heartbeat-line"></canvas>
+    <p class="heartbeat-text">你的每一次心跳，都很重要</p>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 5 — MESSAGE ===== -->
+  <section class="message-section" id="sec5">
+    <div class="message-card">
+      <h2>二十岁，想对你说</h2>
+      <div id="typewriter"></div>
+      <p id="signature">—— 浦毅</p>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 6 — PRESCRIPTION ===== -->
+  <section class="prescription-section">
+    <div class="rx-card">
+      <div class="rx-header">
+        <div>
+          <h3>处方笺</h3>
+          <p style="font-size:12px;color:#888;margin-top:2px">浦毅 · 友谊专科</p>
+        </div>
+        <div class="rx-no">No. 0720</div>
+      </div>
+      <p class="rx-patient">患者姓名：<span>小颜同学</span></p>
+      <p class="rx-patient" style="font-size:12px;color:#999">诊断：对自己太严格、偶尔忘记自己有多好（已好转）</p>
+
+      <div class="rx-table">
+        <div class="rx-item">
+          <span class="rx-drug">① 每天夸自己三次</span>
+          <span class="rx-dose">tid（一日三次）</span>
+        </div>
+        <div class="rx-item">
+          <span class="rx-drug">② 按时吃饭，按时睡觉</span>
+          <span class="rx-dose">qd（每日一次）</span>
+        </div>
+        <div class="rx-item">
+          <span class="rx-drug">③ 想不通的事，来找我聊</span>
+          <span class="rx-dose">prn（必要时）</span>
+        </div>
+        <div class="rx-item">
+          <span class="rx-drug">④ 允许自己不完美</span>
+          <span class="rx-dose">stat（立即执行）</span>
+        </div>
+        <div class="rx-item">
+          <span class="rx-drug">⑤ 开心</span>
+          <span class="rx-dose">无限量</span>
+        </div>
+      </div>
+
+      <div class="rx-footer">
+        <p>医嘱：以上处方长期有效，不得擅自停药。</p>
+        <p>药房：浦毅的聊天窗口，24小时营业，全年无休。</p>
+        <p class="rx-doc">主治医师：浦毅</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 7 — PHOTOS ===== -->
+  <section class="photos-section">
+    <h2>我眼中的你</h2>
+    <div class="photos-grid">
+      <div class="photo-card">
+        <div class="photo-img" style="background:linear-gradient(135deg,#e8e0d8,#d5ccc0)"><span class="photo-tag">替换照片①</span></div>
+        <div class="photo-label">这时候的你</div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-img" style="background:linear-gradient(135deg,#d5ccc0,#c4b8a8)"><span class="photo-tag">替换照片②</span></div>
+        <div class="photo-label">笑得很灿烂</div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-img" style="background:linear-gradient(135deg,#e0dcd0,#c8c0b0)"><span class="photo-tag">替换照片③</span></div>
+        <div class="photo-label">认真的样子</div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-img" style="background:linear-gradient(135deg,#ede4d8,#d8cebe)"><span class="photo-tag">替换照片④</span></div>
+        <div class="photo-label">最好的你</div>
+      </div>
+    </div>
+    <p class="photo-hint">📷 搜索 "替换照片" 换成她的照片</p>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>✦</span></div>
+
+  <!-- ===== SECTION 8 — CLOSING ===== -->
+  <section class="closing" id="sec8">
+    <h2>小颜同学，生日快乐</h2>
+    <p class="sub">二十岁，最好的年华，最好的你</p>
+    <div class="cake-emoji" onclick="showFortune()">🎂</div>
+    <p class="click-hint">👆 点一下蛋糕，抽一张生日签</p>
+  </section>
+
+</div><!-- /main-container -->
+
+<script>
+(function() {
+  'use strict';
+
+  // ==========================================
+  // DOM REFS
+  // ==========================================
+  var musicBtn  = document.getElementById('musicBtn');
+  var bgMusic   = document.getElementById('bgMusic');
+  var starCvs   = document.getElementById('starCanvas');
+  var confCvs   = document.getElementById('confettiCanvas');
+  var hbCanvas  = document.getElementById('heartbeatCanvas');
+  var typeEl    = document.getElementById('typewriter');
+  var signEl    = document.getElementById('signature');
+  var fortunePopup = document.getElementById('fortunePopup');
+  var fortuneText  = document.getElementById('fortuneText');
+  var musicPlaying = false;
+
+  // ==========================================
+  // CANVAS RESIZE
+  // ==========================================
+  function resizeCanvases() {
+    starCvs.width = window.innerWidth;
+    starCvs.height = window.innerHeight;
+    confCvs.width = window.innerWidth;
+    confCvs.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvases);
+  resizeCanvases();
+
+  // ==========================================
+  // STARFIELD — calming, subtle
+  // ==========================================
+  var starCtx = starCvs.getContext('2d');
+  var stars = [];
+  for (var i = 0; i < 120; i++) {
+    stars.push({
+      x: Math.random() * starCvs.width,
+      y: Math.random() * starCvs.height,
+      r: Math.random() * 1.5 + 0.2,
+      twinkle: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.015 + 0.003
+    });
+  }
+
+  function drawStars() {
+    starCtx.clearRect(0, 0, starCvs.width, starCvs.height);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      s.twinkle += s.speed;
+      var a = 0.25 + Math.sin(s.twinkle) * 0.2;
+      starCtx.beginPath();
+      starCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      starCtx.fillStyle = 'rgba(255,255,255,' + a + ')';
+      starCtx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  // ==========================================
+  // CONFETTI
+  // ==========================================
+  var confParticles = [], confActive = false, confRaf = null;
+  var confCtx = confCvs.getContext('2d');
+  var goldColors = ['#e8b86d','#f0c987','#d4a54a','#f5d6a0','#c9973a','#e8c97a','#fff5e0','#dbb55b'];
+
+  function spawnGoldConfetti() {
+    confParticles = [];
+    for (var i = 0; i < 200; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var vel = Math.random() * 6 + 2;
+      confParticles.push({
+        x: confCvs.width / 2, y: confCvs.height / 2,
+        w: Math.random() * 10 + 3, h: Math.random() * 6 + 2,
+        color: goldColors[Math.floor(Math.random() * goldColors.length)],
+        vx: Math.cos(angle) * vel, vy: Math.sin(angle) * vel - Math.random() * 4,
+        rot: Math.random() * Math.PI * 2, rv: Math.random() * 0.1 - 0.05,
+        gravity: 0.08, friction: 0.99, alpha: 1
+      });
+    }
+    confActive = true;
+    setTimeout(function() { confActive = false; }, 5000);
+  }
+
+  function drawConfetti() {
+    confCtx.clearRect(0, 0, confCvs.width, confCvs.height);
+    var alive = false;
+    for (var i = 0; i < confParticles.length; i++) {
+      var c = confParticles[i];
+      c.vy += c.gravity; c.vx *= c.friction;
+      c.x += c.vx; c.y += c.vy; c.rot += c.rv;
+      if (c.y > confCvs.height + 60) c.alpha = 0;
+      else if (c.alpha > 0.01) { c.alpha -= 0.003; alive = true; }
+      else c.alpha = 0;
+      if (c.alpha <= 0) continue;
+      confCtx.save();
+      confCtx.translate(c.x, c.y);
+      confCtx.rotate(c.rot);
+      confCtx.globalAlpha = c.alpha;
+      confCtx.fillStyle = c.color;
+      confCtx.fillRect(-c.w/2, -c.h/2, c.w, c.h);
+      confCtx.restore();
+    }
+    if (alive || confActive) { confRaf = requestAnimationFrame(drawConfetti); }
+    else { confCtx.clearRect(0, 0, confCvs.width, confCvs.height); confRaf = null; }
+  }
+
+  // ==========================================
+  // MUSIC
+  // ==========================================
+  window.toggleMusic = function() {
+    if (musicPlaying) {
+      bgMusic.pause(); musicPlaying = false;
+      musicBtn.textContent = '🔇'; musicBtn.classList.remove('on');
+    } else {
+      tryPlay();
+    }
+  };
+
+  function tryPlay() {
+    if (!bgMusic) return;
+    try {
+      bgMusic.volume = 0.4;
+      var p = bgMusic.play();
+      if (p && p.then) {
+        p.then(function() { musicPlaying = true; musicBtn.textContent = '🎵'; musicBtn.classList.add('on'); })
+         .catch(function() { musicPlaying = false; });
+      }
+    } catch(e) { musicPlaying = false; }
+  }
+
+  // Start music + scroll on first click (browsers require user gesture)
+  window.startExperience = function() {
+    tryPlay();
+    document.getElementById('sec2').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // ==========================================
+  // SCROLL REVEAL
+  // ==========================================
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  // ==========================================
+  // HEARTBEAT CANVAS
+  // ==========================================
+  if (hbCanvas) {
+    hbCanvas.width = hbCanvas.parentElement.offsetWidth || 600;
+    hbCanvas.height = 80;
+    var hbCtx = hbCanvas.getContext('2d');
+
+    function drawHeartbeat(progress) {
+      hbCtx.clearRect(0, 0, hbCanvas.width, hbCanvas.height);
+      var w = hbCanvas.width, h = hbCanvas.height;
+      var midY = h / 2;
+      var offset = progress || 0;
+
+      // Flat line
+      hbCtx.strokeStyle = 'rgba(232,184,109,0.15)';
+      hbCtx.lineWidth = 1;
+      hbCtx.beginPath();
+      hbCtx.moveTo(0, midY);
+      hbCtx.lineTo(w, midY);
+      hbCtx.stroke();
+
+      // Heartbeat pattern
+      var cx = w / 2;
+      hbCtx.strokeStyle = 'rgba(232,184,109,0.7)';
+      hbCtx.lineWidth = 2;
+      hbCtx.shadowColor = 'rgba(232,184,109,0.3)';
+      hbCtx.shadowBlur = 6;
+      hbCtx.beginPath();
+      hbCtx.moveTo(0, midY);
+      hbCtx.lineTo(cx - 100, midY);
+
+      // Heartbeat shape — small bump, big spike, small bump
+      var x0 = cx;
+      hbCtx.lineTo(x0 - 45, midY);
+      hbCtx.lineTo(x0 - 35, midY - 8);
+      hbCtx.lineTo(x0 - 20, midY + 5);
+      hbCtx.lineTo(x0 - 5, midY - 35);
+      hbCtx.lineTo(x0 + 5, midY + 10);
+      hbCtx.lineTo(x0 + 20, midY - 5);
+      hbCtx.lineTo(x0 + 45, midY);
+      hbCtx.lineTo(w, midY);
+      hbCtx.stroke();
+      hbCtx.shadowBlur = 0;
+    }
+    drawHeartbeat(0.5);
+
+    // Animate
+    var hbPhase = 0;
+    function animHeartbeat() {
+      hbPhase += 0.02;
+      drawHeartbeat(0.5 + Math.sin(hbPhase) * 0.3);
+      requestAnimationFrame(animHeartbeat);
+    }
+    animHeartbeat();
+  }
+
+  // ==========================================
+  // TYPEWRITER
+  // ==========================================
+  var msgText =
+    '亲爱的小颜同学，\n' +
+    '\n' +
+    '今天是你的二十岁生日。\n' +
+    '\n' +
+    '二十年，说长不长，说短也不短。\n' +
+    '你从一个爱笑的小女孩，\n' +
+    '变成了一个为了梦想拼尽全力的医学生。\n' +
+    '\n' +
+    '这条路很辛苦，我知道。\n' +
+    '但你走得比谁都坚定。\n' +
+    '\n' +
+    '你知道吗，我有时候会想，\n' +
+    '未来有一天，你会穿上白大褂，\n' +
+    '你会治愈很多人，\n' +
+    '你会成为一个了不起的医生。\n' +
+    '\n' +
+    '但在那之前——\n' +
+    '请允许自己偶尔停下来，\n' +
+    '允许自己不完美，\n' +
+    '允许自己被人照顾。\n' +
+    '\n' +
+    '我一直在。\n' +
+    '不管是凌晨两点还是下午两点，\n' +
+    '不管是微信还是QQ，\n' +
+    '不管你需要的是帮你理清思路、\n' +
+    '安静地听你说话、还是逗你笑一下——\n' +
+    '\n' +
+    '我都在这儿。\n' +
+    '\n' +
+    '二十岁快乐。\n' +
+    '愿你以后的日子，\n' +
+    '多一点心安，多一点快乐。\n' +
+    '\n' +
+    '生日快乐，我最好的朋友。🎂\n' +
+    '\n' +
+    '—— 你的专属聊天窗口，24小时不下线';
+
+  var twDone = false;
+  function startTypewriter() {
+    if (twDone || !typeEl) return;
+    twDone = true;
+    typeEl.innerHTML = '<span class="cursor"></span>';
+    var cursor = typeEl.querySelector('.cursor');
+    var idx = 0;
+
+    function type() {
+      if (idx < msgText.length) {
+        var ch = msgText[idx];
+        if (ch === '\n') {
+          var br = document.createElement('br');
+          cursor.parentNode.insertBefore(br, cursor);
+        } else {
+          var span = document.createElement('span');
+          span.textContent = ch;
+          cursor.parentNode.insertBefore(span, cursor);
+        }
+        idx++;
+        var delay = (ch === '\n') ? 260 : (ch === '，' || ch === '。') ? 130 : 50;
+        setTimeout(type, delay);
+      } else {
+        if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+        if (signEl) signEl.classList.add('show');
+      }
+    }
+    type();
+  }
+
+  var sec5 = document.getElementById('sec5');
+  if (sec5 && typeof IntersectionObserver !== 'undefined') {
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { startTypewriter(); obs.unobserve(sec5); }
+    }, { threshold: 0.3 });
+    obs.observe(sec5);
+  }
+
+  // ==========================================
+  // FORTUNE / CAKE CLICK
+  // ==========================================
+  var fortunes = [
+    '🌟 你治愈别人的同时，<br>也别忘了治愈自己。',
+    '💊 今日处方：<br>开心 × 无限量。',
+    '🩺 未来的张医生，<br>你的病人会很幸运。',
+    '💖 你比你想象的<br>更强大，也更温柔。',
+    '🌈 二十岁的你，<br>是最好的你。',
+    '✨ 今天只准开心，<br>烦恼改天再来。',
+    '🌙 累了就休息，<br>我帮你值班。',
+    '🎀 你的笑容，<br>是这世上最好的药。',
+    '💫 愿你被世界温柔以待，<br>也愿你温柔待己。',
+    '🌺 二十岁之后的人生，<br>全是好故事。'
+  ];
+
+  window.showFortune = function() {
+    var f = fortunes[Math.floor(Math.random() * fortunes.length)];
+    fortuneText.innerHTML = f;
+    fortunePopup.classList.add('show');
+    spawnGoldConfetti();
+    if (!confRaf) confRaf = requestAnimationFrame(drawConfetti);
+  };
+
+  window.closeFortune = function() {
+    fortunePopup.classList.remove('show');
+  };
+
+  // ==========================================
+  // DONE
+  // ==========================================
+  console.log('%c💌 写给小颜同学的生日页面已就绪 %c\n\n向下滚动，慢慢看。',
+    'font-size:16px;color:#e8b86d;', 'font-size:12px;color:#888;');
+
+})();
+</script>
+</body>
+</html>
