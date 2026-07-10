@@ -41,29 +41,6 @@ body {
   pointer-events: none; z-index: 0;
 }
 
-/* ==========================================
-   MUSIC BUTTON
-   ========================================== */
-#musicBtn {
-  position: fixed; top: 20px; right: 20px; z-index: 100;
-  width: 44px; height: 44px; border-radius: 50%;
-  border: 1px solid rgba(232,184,109,0.3);
-  background: rgba(26,26,46,0.6);
-  backdrop-filter: blur(12px);
-  cursor: pointer; font-size: 18px;
-  transition: all 0.4s;
-  color: var(--warm-gold);
-}
-#musicBtn:hover { border-color: var(--warm-gold); box-shadow: 0 0 20px rgba(232,184,109,0.15); }
-#musicBtn.on {
-  border-color: var(--warm-gold);
-  box-shadow: 0 0 25px rgba(232,184,109,0.25);
-  animation: musicGlow 2.5s ease-in-out infinite;
-}
-@keyframes musicGlow {
-  0%, 100% { box-shadow: 0 0 25px rgba(232,184,109,0.25); }
-  50% { box-shadow: 0 0 45px rgba(232,184,109,0.4); }
-}
 
 /* ==========================================
    CONFETTI CANVAS
@@ -509,8 +486,7 @@ body {
 <body>
 
 <!-- ===== MUSIC ===== -->
-<button id="musicBtn" onclick="toggleMusic()">🔇</button>
-<audio id="bgMusic" src="晴天-周杰伦.mp3" loop preload="auto"></audio>
+<!-- 音乐已移除 -->
 
 <!-- ===== CANVASES ===== -->
 <canvas id="starCanvas"></canvas>
@@ -537,7 +513,6 @@ MAIN CONTENT
     </h1>
     <p class="opening-sub">有一些话，想在这个特别的日子说给你听</p>
     <button class="opening-start-btn" onclick="startExperience()">✨ 打开这封信</button>
-    <p class="opening-hint-text">音乐也会一起开始 🎵</p>
   </section>
 
   <!-- ===== DIVIDER ===== -->
@@ -731,8 +706,6 @@ MAIN CONTENT
   // ==========================================
   // DOM REFS
   // ==========================================
-  var musicBtn  = document.getElementById('musicBtn');
-  var bgMusic   = document.getElementById('bgMusic');
   var starCvs   = document.getElementById('starCanvas');
   var confCvs   = document.getElementById('confettiCanvas');
   var hbCanvas  = document.getElementById('heartbeatCanvas');
@@ -740,8 +713,6 @@ MAIN CONTENT
   var signEl    = document.getElementById('signature');
   var fortunePopup = document.getElementById('fortunePopup');
   var fortuneText  = document.getElementById('fortuneText');
-  var musicPlaying = false;
-
   // ==========================================
   // CANVAS RESIZE
   // ==========================================
@@ -835,30 +806,7 @@ MAIN CONTENT
   // ==========================================
   // MUSIC
   // ==========================================
-  window.toggleMusic = function() {
-    if (musicPlaying) {
-      bgMusic.pause(); musicPlaying = false;
-      musicBtn.textContent = '🔇'; musicBtn.classList.remove('on');
-    } else {
-      tryPlay();
-    }
-  };
-
-  function tryPlay() {
-    if (!bgMusic) return;
-    try {
-      bgMusic.volume = 0.4;
-      var p = bgMusic.play();
-      if (p && p.then) {
-        p.then(function() { musicPlaying = true; musicBtn.textContent = '🎵'; musicBtn.classList.add('on'); })
-         .catch(function() { musicPlaying = false; });
-      }
-    } catch(e) { musicPlaying = false; }
-  }
-
-  // Start music + scroll on first click (browsers require user gesture)
   window.startExperience = function() {
-    tryPlay();
     document.getElementById('sec2').scrollIntoView({ behavior: 'smooth' });
   };
 
