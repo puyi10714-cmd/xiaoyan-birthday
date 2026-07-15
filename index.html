@@ -33,12 +33,14 @@ body {
 }
 
 /* ==========================================
-   STARFIELD BACKGROUND
+   BACKGROUND VIDEO
    ========================================== */
-#starCanvas {
+#bgVideo {
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
+  object-fit: cover;
   pointer-events: none; z-index: 0;
+  opacity: 0.5;
 }
 
 /* ==========================================
@@ -512,8 +514,12 @@ body {
 <button id="musicBtn" onclick="toggleMusic()">🔇</button>
 <audio id="bgMusic" src="晴天-周杰伦.mp3" loop preload="auto"></audio>
 
-<!-- ===== CANVASES ===== -->
-<canvas id="starCanvas"></canvas>
+<!-- ===== BACKGROUND VIDEO ===== -->
+<video id="bgVideo" autoplay loop muted playsinline>
+  <source src="bg-video.mp4" type="video/mp4">
+</video>
+
+<!-- ===== CONFETTI CANVAS ===== -->
 <canvas id="confettiCanvas"></canvas>
 
 <!-- ===== FORTUNE POPUP ===== -->
@@ -733,7 +739,7 @@ MAIN CONTENT
   // ==========================================
   var musicBtn  = document.getElementById('musicBtn');
   var bgMusic   = document.getElementById('bgMusic');
-  var starCvs   = document.getElementById('starCanvas');
+  var bgVideo   = document.getElementById('bgVideo');
   var confCvs   = document.getElementById('confettiCanvas');
   var hbCanvas  = document.getElementById('heartbeatCanvas');
   var typeEl    = document.getElementById('typewriter');
@@ -746,8 +752,6 @@ MAIN CONTENT
   // CANVAS RESIZE
   // ==========================================
   function resizeCanvases() {
-    starCvs.width = window.innerWidth;
-    starCvs.height = window.innerHeight;
     confCvs.width = window.innerWidth;
     confCvs.height = window.innerHeight;
   }
@@ -755,337 +759,11 @@ MAIN CONTENT
   resizeCanvases();
 
   // ==========================================
-  // VAN GOGH STARRY NIGHT BACKGROUND
+  // VIDEO BACKGROUND
   // ==========================================
-  var starCtx = starCvs.getContext('2d');
-
-  // Swirl centers (like the famous swirls in Starry Night)
-  var swirls = [
-    { x: 0, y: 0, strength: 0 }, // will be set on resize
-    { x: 0, y: 0, strength: 0 },
-    { x: 0, y: 0, strength: 0 }
-  ];
-
-  // Particles following flow field
-  var flowParticles = [];
-  var PARTICLE_COUNT = 180;
-  for (var i = 0; i < PARTICLE_COUNT; i++) {
-    flowParticles.push({
-      x: Math.random(),
-      y: Math.random(),
-      vx: 0, vy: 0,
-      size: Math.random() * 3.5 + 1,
-      alpha: Math.random() * 0.7 + 0.3,
-      hue: Math.random() < 0.3 ? 42 + Math.random() * 15 : 210 + Math.random() * 40,
-      trail: []
-    });
+  if (bgVideo) {
+    bgVideo.play().catch(function() {});
   }
-
-  // Glowing stars (the big bright ones)
-  var brightStars = [];
-  for (var i = 0; i < 8; i++) {
-    brightStars.push({
-      x: Math.random(), y: Math.random() * 0.7,
-      size: Math.random() * 20 + 12,
-      pulse: Math.random() * Math.PI * 2,
-      pulseSpeed: Math.random() * 0.02 + 0.01
-    });
-  }
-
-  // Village windows
-  var windows = [];
-  for (var i = 0; i < 25; i++) {
-    windows.push({
-      x: Math.random(), y: 0.8 + Math.random() * 0.1,
-      flicker: Math.random() * Math.PI * 2,
-      flickerSpeed: Math.random() * 0.05 + 0.02
-    });
-  }
-
-  // Mountain silhouette points
-  var mountainPoints = [];
-
-  function initMountains() {
-    mountainPoints = [];
-    var points = 30;
-    for (var i = 0; i <= points; i++) {
-      mountainPoints.push({
-        x: i / points,
-        y: 0.72 + Math.sin(i * 2.8) * 0.06 + Math.sin(i * 5.3) * 0.03 + Math.sin(i * 1.7) * 0.08
-      });
-    }
-    // Cypress tree position
-    var cx = 0.22;
-    for (var i = 0; i < mountainPoints.length; i++) {
-      if (Math.abs(mountainPoints[i].x - cx) < 0.08) {
-        mountainPoints[i].y -= 0.12;
-      }
-    }
-  }
-  initMountains();
-
-  function updateSwirls() {
-    swirls[0].x = starCvs.width * 0.35;
-    swirls[0].y = starCvs.height * 0.25;
-    swirls[0].strength = 0.6;
-    swirls[1].x = starCvs.width * 0.7;
-    swirls[1].y = starCvs.height * 0.2;
-    swirls[1].strength = -0.5;
-    swirls[2].x = starCvs.width * 0.5;
-    swirls[2].y = starCvs.height * 0.15;
-    swirls[2].strength = 0.35;
-  }
-  updateSwirls();
-
-  function getFlowField(px, py) {
-    var angle = 0;
-    var w = starCvs.width;
-    var h = starCvs.height;
-    for (var i = 0; i < swirls.length; i++) {
-      var sx = swirls[i].x, sy = swirls[i].y;
-      var dx = px - sx, dy = py - sy;
-      var dist = Math.sqrt(dx * dx + dy * dy) + 0.1;
-      var influence = Math.exp(-dist / (Math.min(w, h) * 0.35));
-      var tangentAngle = Math.atan2(dy, dx) + Math.PI / 2;
-      angle += tangentAngle * influence * swirls[i].strength * 3;
-    }
-    return angle;
-  }
-
-  // Moon
-  function drawMoon() {
-    var w = starCvs.width, h = starCvs.height;
-    var mx = w * 0.78, my = h * 0.18, mr = Math.min(w, h) * 0.07;
-
-    // Outer glow
-    for (var i = 4; i >= 0; i--) {
-      var grad = starCtx.createRadialGradient(mx, my, mr * (0.8 + i * 0.4), mx, my, mr * (1.8 + i * 0.6));
-      grad.addColorStop(0, 'rgba(255,240,200,' + (0.15 - i * 0.025) + ')');
-      grad.addColorStop(1, 'rgba(255,240,200,0)');
-      starCtx.fillStyle = grad;
-      starCtx.beginPath();
-      starCtx.arc(mx, my, mr * (2 + i * 0.7), 0, Math.PI * 2);
-      starCtx.fill();
-    }
-
-    // Moon body
-    var moonGrad = starCtx.createRadialGradient(mx - mr * 0.3, my - mr * 0.2, mr * 0.1, mx, my, mr);
-    moonGrad.addColorStop(0, '#fffef5');
-    moonGrad.addColorStop(0.6, '#f5d73d');
-    moonGrad.addColorStop(1, '#e8a820');
-    starCtx.fillStyle = moonGrad;
-    starCtx.beginPath();
-    starCtx.arc(mx, my, mr, 0, Math.PI * 2);
-    starCtx.fill();
-
-    // Crescent shadow
-    starCtx.fillStyle = 'rgba(10,17,40,0.75)';
-    starCtx.beginPath();
-    starCtx.arc(mx + mr * 0.4, my - mr * 0.15, mr * 0.85, 0, Math.PI * 2);
-    starCtx.fill();
-  }
-
-  function drawBackground() {
-    var w = starCvs.width, h = starCvs.height;
-
-    // Sky gradient
-    var skyGrad = starCtx.createLinearGradient(0, 0, 0, h);
-    skyGrad.addColorStop(0, '#060d2e');
-    skyGrad.addColorStop(0.3, '#0d1b4a');
-    skyGrad.addColorStop(0.5, '#142856');
-    skyGrad.addColorStop(0.7, '#1a3358');
-    skyGrad.addColorStop(1, '#1a2a3a');
-    starCtx.fillStyle = skyGrad;
-    starCtx.fillRect(0, 0, w, h);
-  }
-
-  function drawLandscape() {
-    var w = starCvs.width, h = starCvs.height;
-
-    // Mountains
-    starCtx.beginPath();
-    starCtx.moveTo(0, h);
-    for (var i = 0; i < mountainPoints.length; i++) {
-      var px = mountainPoints[i].x * w;
-      var py = mountainPoints[i].y * h;
-      starCtx.lineTo(px, py);
-    }
-    starCtx.lineTo(w, h);
-    starCtx.closePath();
-    var landGrad = starCtx.createLinearGradient(0, h * 0.7, 0, h);
-    landGrad.addColorStop(0, '#0f1f2d');
-    landGrad.addColorStop(0.5, '#0a1520');
-    landGrad.addColorStop(1, '#050d14');
-    starCtx.fillStyle = landGrad;
-    starCtx.fill();
-
-    // Subtle rolling hills
-    starCtx.beginPath();
-    starCtx.moveTo(0, h * 0.85);
-    for (var i = 0; i <= 40; i++) {
-      var hx = (i / 40) * w;
-      var hy = h * 0.8 + Math.sin(i * 0.5) * h * 0.03 + Math.sin(i * 1.3) * h * 0.02;
-      starCtx.lineTo(hx, hy);
-    }
-    starCtx.lineTo(w, h);
-    starCtx.lineTo(0, h);
-    starCtx.closePath();
-    starCtx.fillStyle = '#0d1a25';
-    starCtx.fill();
-
-    // Cypress tree silhouette (left side)
-    var cx = w * 0.22, cy = h * 0.68, ch = h * 0.32;
-    starCtx.fillStyle = '#070f16';
-    starCtx.beginPath();
-    starCtx.moveTo(cx, cy);
-    starCtx.quadraticCurveTo(cx - w * 0.03, cy - ch * 0.5, cx - w * 0.015, cy - ch);
-    starCtx.quadraticCurveTo(cx - w * 0.01, cy - ch * 0.6, cx, cy - ch * 0.95);
-    starCtx.quadraticCurveTo(cx + w * 0.01, cy - ch * 0.6, cx + w * 0.015, cy - ch);
-    starCtx.quadraticCurveTo(cx + w * 0.03, cy - ch * 0.5, cx, cy);
-    starCtx.fill();
-
-    // Village windows
-    for (var i = 0; i < windows.length; i++) {
-      var win = windows[i];
-      win.flicker += win.flickerSpeed;
-      var flickerAlpha = 0.5 + Math.sin(win.flicker) * 0.3 + Math.cos(win.flicker * 1.7) * 0.2;
-      var wx = win.x * w;
-      var wy = win.y * h;
-      if (wy > h * 0.72) {
-        starCtx.fillStyle = 'rgba(255,180,80,' + flickerAlpha + ')';
-        starCtx.fillRect(wx - 2, wy - 2, 4, 3);
-        starCtx.fillStyle = 'rgba(255,200,120,' + (flickerAlpha * 0.5) + ')';
-        starCtx.fillRect(wx - 4, wy - 3, 8, 5);
-      }
-    }
-  }
-
-  function drawSwirls() {
-    var w = starCvs.width, h = starCvs.height;
-
-    // Flow particles following the field
-    for (var i = 0; i < flowParticles.length; i++) {
-      var p = flowParticles[i];
-      var angle = getFlowField(p.x, p.y);
-      var speed = 0.0008 + p.size * 0.0003;
-      p.vx += Math.cos(angle) * speed * 0.3;
-      p.vy += Math.sin(angle) * speed * 0.3;
-      p.vx *= 0.96;
-      p.vy *= 0.96;
-
-      // Wrap around
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < -0.05) p.x = 1.05;
-      if (p.x > 1.05) p.x = -0.05;
-      if (p.y < -0.05) p.y = 1.05;
-      if (p.y > 0.8) p.y = -0.05;
-
-      // Draw swirling brush stroke
-      var px = p.x * w, py = p.y * h;
-      var hue = p.hue;
-      var sat = hue > 100 ? '70%' : '90%';
-      var light = hue > 100 ? (40 + p.alpha * 30) + '%' : (55 + p.alpha * 35) + '%';
-
-      starCtx.strokeStyle = 'hsla(' + hue + ',' + sat + ',' + light + ',' + (p.alpha * 0.25) + ')';
-      starCtx.lineWidth = p.size * 0.7;
-      starCtx.lineCap = 'round';
-      starCtx.beginPath();
-      starCtx.moveTo(px, py);
-      starCtx.lineTo(px - p.vx * w * 4, py - p.vy * h * 4);
-      starCtx.stroke();
-    }
-
-    // Bright swirling bands
-    for (var b = 0; b < 3; b++) {
-      var sc = swirls[b];
-      var bandAlpha = 0.06;
-      starCtx.strokeStyle = 'rgba(180,210,255,' + bandAlpha + ')';
-      starCtx.lineWidth = 2;
-      for (var t = 0; t < Math.PI * 2; t += 0.05) {
-        var r = Math.min(w, h) * (0.08 + b * 0.06);
-        var sx = sc.x + Math.cos(t) * r;
-        var sy = sc.y + Math.sin(t) * r * 0.6;
-        var nx = sc.x + Math.cos(t + 0.05) * r;
-        var ny = sc.y + Math.sin(t + 0.05) * r * 0.6;
-        starCtx.beginPath();
-        starCtx.moveTo(sx, sy);
-        starCtx.lineTo(nx, ny);
-        starCtx.stroke();
-      }
-    }
-  }
-
-  function drawBrightStars() {
-    var w = starCvs.width, h = starCvs.height;
-    for (var i = 0; i < brightStars.length; i++) {
-      var bs = brightStars[i];
-      bs.pulse += bs.pulseSpeed;
-      var brightness = 0.6 + Math.sin(bs.pulse) * 0.4;
-      var bx = bs.x * w, by = bs.y * h;
-
-      // Outer halo
-      for (var r = 3; r >= 0; r--) {
-        var grad = starCtx.createRadialGradient(bx, by, bs.size * 0.3, bx, by, bs.size * (1.5 + r * 0.8));
-        grad.addColorStop(0, 'rgba(255,240,200,' + (0.3 * brightness - r * 0.06) + ')');
-        grad.addColorStop(1, 'rgba(255,240,200,0)');
-        starCtx.fillStyle = grad;
-        starCtx.beginPath();
-        starCtx.arc(bx, by, bs.size * (2 + r * 0.9), 0, Math.PI * 2);
-        starCtx.fill();
-      }
-
-      // Core
-      var coreGrad = starCtx.createRadialGradient(bx, by, 0, bx, by, bs.size * 0.6);
-      coreGrad.addColorStop(0, 'rgba(255,255,240,' + brightness + ')');
-      coreGrad.addColorStop(0.5, 'rgba(255,230,150,' + (brightness * 0.7) + ')');
-      coreGrad.addColorStop(1, 'rgba(255,200,80,0)');
-      starCtx.fillStyle = coreGrad;
-      starCtx.beginPath();
-      starCtx.arc(bx, by, bs.size * 0.7, 0, Math.PI * 2);
-      starCtx.fill();
-
-      // Cross sparkle
-      var sparkleAlpha = brightness * 0.5;
-      starCtx.strokeStyle = 'rgba(255,255,240,' + sparkleAlpha + ')';
-      starCtx.lineWidth = 1;
-      for (var a = 0; a < 4; a++) {
-        var angle = a * Math.PI / 2 + Math.sin(bs.pulse * 1.3) * 0.2;
-        starCtx.beginPath();
-        starCtx.moveTo(bx, by);
-        starCtx.lineTo(bx + Math.cos(angle) * bs.size * 1.5, by + Math.sin(angle) * bs.size * 1.5);
-        starCtx.stroke();
-      }
-    }
-  }
-
-  var prevTime = 0;
-  function drawStarryNight(timestamp) {
-    if (!prevTime) prevTime = timestamp;
-    var dt = Math.min(timestamp - prevTime, 50);
-    prevTime = timestamp;
-
-    // Draw static background every 5 frames for performance
-    if (!drawStarryNight.frameCount) drawStarryNight.frameCount = 0;
-    if (drawStarryNight.frameCount % 5 === 0) {
-      drawBackground();
-      drawLandscape();
-      drawMoon();
-    }
-    drawSwirls();
-    drawBrightStars();
-    drawStarryNight.frameCount++;
-    requestAnimationFrame(drawStarryNight);
-  }
-  requestAnimationFrame(drawStarryNight);
-
-  // Update swirl positions on resize
-  var origResize = resizeCanvases;
-  resizeCanvases = function() {
-    origResize();
-    updateSwirls();
-    initMountains();
-  };
 
   // ==========================================
   // CONFETTI
