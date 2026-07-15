@@ -161,338 +161,165 @@ body {
    ========================================== */
 .divider {
   display: flex; align-items: center; gap: 16px;
-  margin: 50px 0; opacity: 0.5;
+  margin: 50px 0; opacity: 0.4;
 }
 .divider::before, .divider::after {
   content: ''; flex: 1; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(232,184,109,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
 }
-.divider span { color: var(--warm-gold); font-size: 14px; }
+.divider span { color: rgba(255,255,255,0.5); font-size: 14px; }
 
 /* ==========================================
-   SECTION 2 — "我知道" (I know you)
+   SECTION 2 — "我知道"
    ========================================== */
-.know-section {
-  padding: 40px 0;
-}
-
+.know-section { padding: 40px 0; }
 .know-section h2 {
   font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.8rem; color: #fff;
-  margin-bottom: 30px;
+  font-size: 1.8rem; color: #fff; margin-bottom: 30px;
+  text-shadow: 0 0 30px rgba(255,255,255,0.3);
 }
-
 .know-card {
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px; padding: 30px 28px;
-  margin-bottom: 16px;
-  opacity: 0;
-  transform: translateY(30px);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 30px 28px; margin-bottom: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0; transform: translateY(30px);
   transition: all 0.7s ease;
-  backdrop-filter: blur(8px);
 }
-.know-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
+.know-card.visible { opacity: 1; transform: translateY(0); }
 .know-card .emoji { font-size: 28px; margin-bottom: 10px; display: block; }
-.know-card h3 {
-  font-size: 1.1rem; color: var(--warm-gold);
-  margin-bottom: 8px; font-weight: normal;
-}
-.know-card p {
-  font-size: 0.95rem; color: rgba(255,255,255,0.85);
-  line-height: 1.8;
-}
+.know-card h3 { font-size: 1.1rem; color: #fff; margin-bottom: 8px; font-weight: normal; }
+.know-card p { font-size: 0.95rem; color: rgba(255,255,255,0.75); line-height: 1.8; }
 
 /* ==========================================
    SECTION 3 — CHAT BUBBLES
    ========================================== */
-.chat-section {
-  padding: 40px 0;
-}
-
+.chat-section { padding: 40px 0; }
 .chat-section h2 {
   font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.8rem; color: #fff;
-  margin-bottom: 10px;
+  font-size: 1.8rem; color: #fff; margin-bottom: 10px;
+  text-shadow: 0 0 30px rgba(255,255,255,0.3);
 }
-.chat-section .chat-subtitle {
-  font-size: 13px; color: var(--text-muted);
-  margin-bottom: 30px;
-}
-
-.chat-list {
-  display: flex; flex-direction: column; gap: 12px;
-}
-
+.chat-section .chat-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 30px; }
+.chat-list { display: flex; flex-direction: column; gap: 12px; }
 .chat-msg {
-  max-width: 80%; padding: 13px 18px;
-  border-radius: 18px;
+  max-width: 80%; padding: 13px 18px; border-radius: 18px;
   font-size: 0.95rem; line-height: 1.7;
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 0; transform: translateY(20px);
   transition: all 0.6s ease;
+  backdrop-filter: blur(8px);
 }
-.chat-msg.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.chat-msg.visible { opacity: 1; transform: translateY(0); }
 .chat-msg.from-me {
-  align-self: flex-end;
-  background: var(--chat-green);
-  color: #1a1a2e;
+  align-self: flex-end; margin-left: 20%;
+  background: rgba(149,236,105,0.2);
+  border: 1px solid rgba(149,236,105,0.25);
+  color: #fff;
   border-bottom-right-radius: 4px;
-  margin-left: 20%;
 }
 .chat-msg.from-her {
-  align-self: flex-start;
-  background: rgba(255,255,255,0.08);
-  color: var(--text-light);
+  align-self: flex-start; margin-right: 20%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.9);
   border-bottom-left-radius: 4px;
-  margin-right: 20%;
 }
-.chat-time {
-  font-size: 11px; color: var(--text-muted);
-  text-align: center; margin: 16px 0 8px;
-}
+.chat-time { font-size: 11px; color: rgba(255,255,255,0.35); text-align: center; margin: 16px 0 8px; }
 
 /* ==========================================
-   SECTION 4 — HEARTBEAT LINE
+   SECTION 4 — HEARTBEAT
    ========================================== */
-.heartbeat-section {
-  padding: 50px 0; text-align: center;
-}
-
-.heartbeat-line {
-  width: 100%; height: 80px;
-  margin: 20px 0;
-}
-.heartbeat-text {
-  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.3rem; color: var(--warm-gold);
-  margin-top: 16px;
-}
+.heartbeat-section { padding: 50px 0; text-align: center; }
+.heartbeat-line { width: 100%; height: 80px; margin: 20px 0; }
+.heartbeat-text { font-family: 'STKaiti', 'KaiTi', '楷体', serif; font-size: 1.3rem; color: #fff; margin-top: 16px; }
 
 /* ==========================================
    SECTION 5 — MESSAGE
    ========================================== */
-.message-section {
-  padding: 40px 0;
-}
-
+.message-section { padding: 40px 0; }
 .message-card {
-  background: linear-gradient(160deg, rgba(232,184,109,0.06), rgba(232,184,109,0.02));
-  border: 1px solid rgba(232,184,109,0.12);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 20px; padding: 40px 30px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-
 .message-card h2 {
   font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.6rem; color: #fff;
-  margin-bottom: 28px;
-  text-align: center;
+  font-size: 1.6rem; color: #fff; margin-bottom: 28px; text-align: center;
 }
-
-#typewriter {
-  font-size: 1.05rem; line-height: 2.3;
-  color: var(--text-light);
-  min-height: 260px;
-}
-.cursor {
-  display: inline-block; width: 2px; height: 1.2em;
-  background: var(--warm-gold); margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: cursorBlink 0.8s step-end infinite;
-}
+#typewriter { font-size: 1.05rem; line-height: 2.3; color: rgba(255,255,255,0.85); min-height: 260px; }
+.cursor { display: inline-block; width: 2px; height: 1.2em; background: #fff; margin-left: 2px; vertical-align: text-bottom; animation: cursorBlink 0.8s step-end infinite; }
 @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-#signature {
-  margin-top: 30px; text-align: right;
-  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.3rem; color: var(--warm-gold);
-  opacity: 0; transition: opacity 1.5s;
-}
+#signature { margin-top: 30px; text-align: right; font-family: 'STKaiti', 'KaiTi', '楷体', serif; font-size: 1.3rem; color: #fff; opacity: 0; transition: opacity 1.5s; }
 #signature.show { opacity: 1; }
 
 /* ==========================================
    SECTION 6 — PRESCRIPTION
    ========================================== */
-.prescription-section {
-  padding: 50px 0;
-}
-
+.prescription-section { padding: 50px 0; }
 .rx-card {
-  background: var(--soft-cream);
-  color: #2d2d2d;
-  border-radius: 8px;
-  padding: 35px 28px;
+  background: rgba(255,255,255,0.9);
+  color: #2d2d2d; border-radius: 8px; padding: 35px 28px;
   font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3); position: relative; overflow: hidden;
 }
-.rx-card::before {
-  content: '℞';
-  position: absolute; top: 20px; right: 24px;
-  font-size: 90px; color: rgba(0,0,0,0.04);
-  pointer-events: none;
-}
-.rx-header {
-  display: flex; justify-content: space-between;
-  align-items: flex-start; margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px dashed rgba(0,0,0,0.15);
-}
-.rx-header h3 {
-  font-size: 1.4rem; font-weight: normal;
-}
-.rx-header .rx-no {
-  font-size: 13px; color: #888;
-}
-.rx-patient {
-  font-size: 14px; margin-bottom: 4px;
-  color: #555;
-}
-.rx-patient span {
-  color: #2d2d2d; font-size: 1.1rem;
-}
-.rx-table {
-  width: 100%; margin: 20px 0;
-}
-.rx-table .rx-item {
-  display: flex; align-items: baseline;
-  padding: 10px 0;
-  border-bottom: 1px dotted rgba(0,0,0,0.08);
-  font-size: 0.95rem;
-}
-.rx-item .rx-drug {
-  flex: 1; color: #2d2d2d;
-}
-.rx-item .rx-dose {
-  color: #888; font-size: 0.85rem;
-  text-align: right;
-}
-.rx-footer {
-  margin-top: 24px; padding-top: 16px;
-  border-top: 1px dashed rgba(0,0,0,0.15);
-  font-size: 13px; color: #888; line-height: 2;
-}
-.rx-footer .rx-doc {
-  font-size: 1rem; color: #2d2d2d;
-  margin-top: 8px;
-}
+.rx-card::before { content: '℞'; position: absolute; top: 20px; right: 24px; font-size: 90px; color: rgba(0,0,0,0.04); pointer-events: none; }
+.rx-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed rgba(0,0,0,0.15); }
+.rx-header h3 { font-size: 1.4rem; font-weight: normal; }
+.rx-header .rx-no { font-size: 13px; color: #888; }
+.rx-patient { font-size: 14px; margin-bottom: 4px; color: #555; }
+.rx-patient span { color: #2d2d2d; font-size: 1.1rem; }
+.rx-table { width: 100%; margin: 20px 0; }
+.rx-table .rx-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px dotted rgba(0,0,0,0.08); font-size: 0.95rem; }
+.rx-item .rx-drug { flex: 1; color: #2d2d2d; }
+.rx-item .rx-dose { color: #888; font-size: 0.85rem; text-align: right; }
+.rx-footer { margin-top: 24px; padding-top: 16px; border-top: 1px dashed rgba(0,0,0,0.15); font-size: 13px; color: #888; line-height: 2; }
+.rx-footer .rx-doc { font-size: 1rem; color: #2d2d2d; margin-top: 8px; }
 
 /* ==========================================
    SECTION 7 — PHOTOS
    ========================================== */
-.photos-section {
-  padding: 50px 0; text-align: center;
-}
-.photos-section h2 {
-  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.6rem; color: #fff;
-  margin-bottom: 30px;
-}
-.photos-grid {
-  display: flex; flex-wrap: wrap; gap: 20px;
-  justify-content: center;
-}
+.photos-section { padding: 50px 0; text-align: center; }
+.photos-section h2 { font-family: 'STKaiti', 'KaiTi', '楷体', serif; font-size: 1.6rem; color: #fff; margin-bottom: 30px; text-shadow: 0 0 30px rgba(255,255,255,0.3); }
+.photos-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
 .photo-card {
-  background: rgba(255,255,255,0.95);
-  padding: 10px 10px 35px;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
-  width: 200px;
+  background: rgba(255,255,255,0.08); padding: 10px 10px 35px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3); width: 200px;
   transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 .photo-card:nth-child(1) { transform: rotate(-2deg); }
 .photo-card:nth-child(2) { transform: rotate(1.5deg); }
 .photo-card:nth-child(3) { transform: rotate(-1deg); }
 .photo-card:nth-child(4) { transform: rotate(2.5deg); }
-.photo-card:hover {
-  transform: rotate(0deg) scale(1.08) !important;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.4); z-index: 5;
-}
-.photo-img {
-  width: 180px; height: 180px;
-  background: linear-gradient(135deg, #e8e0d8, #d5ccc0);
-  position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.photo-img::after {
-  content: '📷'; font-size: 48px; opacity: 0.3;
-}
-.photo-tag {
-  position: absolute; bottom: 4px; left: 0; right: 0;
-  text-align: center; font-size: 10px; color: #999; z-index: 2;
-}
-.photo-label {
-  text-align: center; margin-top: 10px;
-  font-size: 13px; color: #666;
-  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-}
-.photo-hint {
-  margin-top: 24px; font-size: 12px; color: var(--text-muted);
-}
+.photo-card:hover { transform: rotate(0deg) scale(1.08) !important; box-shadow: 0 14px 40px rgba(0,0,0,0.4); z-index: 5; }
+.photo-img { width: 180px; height: 180px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.photo-img::after { content: '📷'; font-size: 48px; opacity: 0.3; }
+.photo-tag { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 10px; color: #999; z-index: 2; }
+.photo-label { text-align: center; margin-top: 10px; font-size: 13px; color: rgba(255,255,255,0.7); font-family: 'STKaiti', 'KaiTi', '楷体', serif; }
+.photo-hint { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.4); }
 
 /* ==========================================
    SECTION 8 — CLOSING
    ========================================== */
-.closing {
-  min-height: 60vh;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  text-align: center; padding: 60px 0;
-}
-.closing h2 {
-  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  color: #fff; margin-bottom: 16px;
-}
-.closing .sub {
-  font-size: 1rem; color: var(--warm-gold);
-}
-.closing .cake-emoji {
-  font-size: 60px; margin-top: 24px;
-  cursor: pointer; transition: transform 0.3s;
-  display: inline-block;
-}
+.closing { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 0; }
+.closing h2 { font-family: 'STKaiti', 'KaiTi', '楷体', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); color: #fff; margin-bottom: 16px; text-shadow: 0 0 40px rgba(255,255,255,0.3); }
+.closing .sub { font-size: 1rem; color: rgba(255,255,255,0.7); }
+.closing .cake-emoji { font-size: 60px; margin-top: 24px; cursor: pointer; transition: transform 0.3s; display: inline-block; }
 .closing .cake-emoji:hover { transform: scale(1.2); }
-.closing .click-hint {
-  font-size: 13px; color: var(--text-muted);
-  margin-top: 12px;
-}
+.closing .click-hint { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 12px; }
 
 /* ==========================================
-   FORTUNE CARD (after clicking cake)
+   FORTUNE POPUP
    ========================================== */
-.fortune-popup {
-  position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(10,0,20,0.85);
-  backdrop-filter: blur(8px);
-  z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.5s;
-}
-.fortune-popup.show {
-  opacity: 1; pointer-events: auto;
-}
-.fortune-card {
-  background: linear-gradient(150deg, rgba(232,184,109,0.1), rgba(26,26,46,0.95));
-  border: 1px solid rgba(232,184,109,0.25);
-  border-radius: 20px; padding: 40px 30px;
-  max-width: 350px; text-align: center;
-  cursor: pointer;
-}
+.fortune-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,20,0.8); backdrop-filter: blur(12px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+.fortune-popup.show { opacity: 1; pointer-events: auto; }
+.fortune-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 40px 30px; max-width: 350px; text-align: center; cursor: pointer; backdrop-filter: blur(16px); }
 .fortune-card .fortune-icon { font-size: 50px; margin-bottom: 16px; }
-.fortune-card .fortune-text {
-  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
-  font-size: 1.2rem; color: #fff; line-height: 2.2;
-}
+.fortune-card .fortune-text { font-family: 'STKaiti', 'KaiTi', '楷体', serif; font-size: 1.2rem; color: #fff; line-height: 2.2; }
 
 /* ==========================================
    RESPONSIVE
