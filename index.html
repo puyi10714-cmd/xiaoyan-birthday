@@ -282,11 +282,16 @@ body {
    SECTION 7 — PHOTOS
    ========================================== */
 .photos-section { padding: 50px 0; text-align: center; }
-.photos-section h2 { font-family: 'STKaiti', 'KaiTi', '楷体', serif; font-size: 1.6rem; color: #fff; margin-bottom: 30px; text-shadow: 0 0 30px rgba(255,255,255,0.3); }
-.photos-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 700px;
+  margin: 0 auto;
+}
 .photo-card {
-  background: rgba(255,255,255,0.08); padding: 10px 10px 35px;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.3); width: 200px;
+  background: rgba(255,255,255,0.08); padding: 10px 10px 30px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.1);
@@ -294,10 +299,15 @@ body {
 .photo-card:nth-child(1) { transform: rotate(-2deg); }
 .photo-card:nth-child(2) { transform: rotate(1.5deg); }
 .photo-card:nth-child(3) { transform: rotate(-1deg); }
-.photo-card:nth-child(4) { transform: rotate(2.5deg); }
-.photo-card:hover { transform: rotate(0deg) scale(1.08) !important; box-shadow: 0 14px 40px rgba(0,0,0,0.4); z-index: 5; }
-.photo-img { width: 180px; height: 180px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.photo-img::after { content: '📷'; font-size: 48px; opacity: 0.3; }
+.photo-card:nth-child(4) { transform: rotate(2deg); }
+.photo-card:nth-child(5) { transform: rotate(-1.5deg); }
+.photo-card:nth-child(6) { transform: rotate(1deg); }
+.photo-card:hover { transform: rotate(0deg) scale(1.08) !important; z-index: 5; box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
+.photo-img {
+  width: 100%; aspect-ratio: 1;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
 .photo-tag { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 10px; color: #999; z-index: 2; }
 .photo-label { text-align: center; margin-top: 10px; font-size: 13px; color: rgba(255,255,255,0.7); font-family: 'STKaiti', 'KaiTi', '楷体', serif; }
 .photo-hint { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.4); }
@@ -330,8 +340,8 @@ body {
   .chat-msg.from-me { margin-left: 12%; }
   .chat-msg.from-her { margin-right: 12%; }
   .rx-card { padding: 24px 18px; }
-  .photo-card { width: 150px; padding: 8px 8px 28px; }
-  .photo-img { width: 134px; height: 134px; }
+  .photos-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .photo-card { padding: 8px 8px 24px; }
   .message-card { padding: 28px 20px; }
 }
 </style>
@@ -523,7 +533,6 @@ MAIN CONTENT
 
   <!-- ===== SECTION 7 — PHOTOS ===== -->
   <section class="photos-section">
-    <h2>我眼中的你</h2>
     <div class="photos-grid">
       <div class="photo-card">
         <div class="photo-img" style="background: url('1f06707c8c183bbea87895978ae01789_720.jpg') center/cover"></div>
